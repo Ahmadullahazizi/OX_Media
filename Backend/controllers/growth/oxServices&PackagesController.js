@@ -6,7 +6,7 @@ import { OXServices } from "../../models/growth/oxService&PackagesSchema.js";
 
 
 
-  const oxservice = async (req, res) => {
+const addoxservice = async (req, res) => {
     try {
       console.log('Request body:', req.body);
       console.log('Research file:', req.file);
@@ -90,4 +90,4 @@ import { OXServices } from "../../models/growth/oxService&PackagesSchema.js";
     }
   };
 
-  export{oxservice, }
+  export{addoxservice, }
