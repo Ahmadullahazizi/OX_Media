@@ -64,19 +64,19 @@ router.delete("/delete-package/:packageID", DeleteOXpackages);
 
 // //Ox Services & Packages Routes
 // // the route below http://localhost:3000/api/v1/oxservices/add-package - POST
-// router.post("/", addOxServicesPackage);
+router.post("/add-services&package", addOxServicesPackage);
 
-// // the route below http://localhost:3000/api/v1/oxservices/update-package/:packageID - PUT
-// router.put("//:id", updateOxServicesPackage);
+// the route below http://localhost:3000/api/v1/oxservices/update-package/:packageID - PUT
+router.put("/update-services&package/:id", updateOxServicesPackage);
 
-// // the route below http://localhost:3000/api/v1/oxservices/get-all-package - GET
-// router.get("/", getAllOxServicesPackages);
+// the route below http://localhost:3000/api/v1/oxservices/get-all-package - GET
+router.get("/get-services&package", getAllOxServicesPackages);
 
-// // the route below http://localhost:3000/api/v1/oxservices/get-single-package/:packageID - GET
-// router.get("/:id", getOxServicesPackageById);
+// the route below http://localhost:3000/api/v1/oxservices/get-single-package/:packageID - GET
+router.get("/get-services&package/:id", getOxServicesPackageById);
 
-// // the route below http://localhost:3000/api/v1/oxservices/delete-package/:packageID - DELETE
-// router.delete("/:id", deleteOxServicesPackage);
+// the route below http://localhost:3000/api/v1/oxservices/delete-package/:packageID - DELETE
+router.delete("/delete-services&package/:id", deleteOxServicesPackage);
 
 
 //Ox Services Deliverables
