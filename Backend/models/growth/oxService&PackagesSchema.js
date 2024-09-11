@@ -24,9 +24,8 @@ const oxPackagesSchema = new Schema({
   pkg_name: { type: String, required: true },
   description: { type: String },
   status: { type: String, enum: ['active', 'inactive'], default: 'active' },
-  duration: { type: String }, // Duration as string
+  duration: { type: Number }, // Duration in days
   eligibility: { type: String },
-  marketValue: { type: String },
   price_before_discount: { type: String },
   price_after_discount: { type: String },
 });
