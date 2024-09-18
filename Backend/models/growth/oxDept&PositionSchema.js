@@ -4,8 +4,8 @@ const { Schema, model } = mongoose;
 
 // Department Schema
 const departmentSchema = new Schema({
-  manager_id: { type: Schema.Types.ObjectId, ref: 'Employee', required: true },
-  office_id: { type: Schema.Types.ObjectId, ref: 'Office', required: true },
+  //manager_id: { type: Schema.Types.ObjectId, ref: 'Employee', required: true },
+  office: { type: Schema.Types.ObjectId, ref: 'Office', required: true },
   name: { type: String, required: true },
   description: { type: String },
   date_added: { type: Date, default: Date.now },
@@ -20,8 +20,8 @@ const departmentSchema = new Schema({
 
 // Division Schema
 const divisionSchema = new Schema({
-  head_id: { type: Schema.Types.ObjectId, ref: 'Employee', required: true },
-  dept_id: { type: Schema.Types.ObjectId, ref: 'Department', required: true },
+  // head_id: { type: Schema.Types.ObjectId, ref: 'Employee', required: true },
+  dept: { type: Schema.Types.ObjectId, ref: 'Department', required: true },
   name: { type: String, required: true },
   description: { type: String },
   date_added: { type: Date, default: Date.now },
@@ -47,7 +47,7 @@ const officeSchema = new Schema({
 
 // Dept Position Schema
 const deptPositionSchema = new Schema({
-  dept_id: { type: Schema.Types.ObjectId, ref: 'Department', required: true },
+  dept: { type: Schema.Types.ObjectId, ref: 'Department', required: true },
   name: { type: String, required: true },
   description: { type: String },
   responsibilities: { type: String },
@@ -65,7 +65,7 @@ const deptPositionSchema = new Schema({
 // Division Position Schema
 const divisionPositionSchema = new Schema({
  
-  division_id: { type: Schema.Types.ObjectId, ref: 'Division', required: true },
+  division: { type: Schema.Types.ObjectId, ref: 'Division', required: true },
   name: { type: String, required: true },
   description: { type: String },
   responsibilities: { type: String },
@@ -83,7 +83,7 @@ const divisionPositionSchema = new Schema({
 // Office Position Schema
 const officePositionSchema = new Schema({
  
-  office_id: { type: Schema.Types.ObjectId, ref: 'Office', required: true },
+  office: { type: Schema.Types.ObjectId, ref: 'Office', required: true },
   name: { type: String, required: true },
   description: { type: String },
   responsibilities: { type: String },
