@@ -3,6 +3,7 @@ import './App.css'
 import HomePage from "./pages/HomePage";
 import DashboardLayout from "./pages/Admin/DashboardLayout";
 import Dashboard from "./pages/Admin/Dashboard";
+import Branch from "./pages/Growth & strategy/AddBranch";
 
 function App() {
   
@@ -15,6 +16,7 @@ function App() {
     {/* Admin Routes */}
     <Route path="/admin" element={<DashboardLayout/>}>
     <Route index element={<Dashboard />} />
+    <Route path="branch" element={<Branch/>} /> 
     </Route>
      </Routes>
     </>
