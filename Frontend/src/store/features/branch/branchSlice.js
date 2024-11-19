@@ -17,7 +17,7 @@ export const AddNewBranch = createAsyncThunk(
 
 //Fetch All Branch Function
 export const GetAllBranch = createAsyncThunk(
-  "niche/GetAllBranch",
+  "branch/GetAllBranch",
   async ( thunkAPI) => {
     try {
       const response = await branchService.allBranches();

@@ -13,6 +13,10 @@ export default {
   			sm: 'calc(var(--radius) - 4px)'
   		},
   		colors: {
+			"sidebar-bg":"#F4F5FB",
+			"sidebar-text":"#323338",
+			"sidebar-hover":"#EBECEF",
+			"sidebar-sub-gray":"#4b5563",
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {

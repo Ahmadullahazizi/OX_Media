@@ -19,28 +19,53 @@ import {
 } from "lucide-react";
 import { Link, Outlet } from "react-router-dom";
 import LOGO from "../../assets/Main B.png";
+import { useEffect, useState } from "react";
+import { GetAllBranch } from "@/store/features/branch/branchSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 function DashboardLayout() {
+  const branch = useSelector((state) => state.branch.branch);
+  const [isOpen, setIsOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [Branches, setBranches] = useState([]);
+
+  const dispatch = useDispatch();
+
+  // Fetch branches from props and set the state
+  useEffect(() => {
+    dispatch(GetAllBranch());
+    if (branch && branch.branch) {
+      console.log(branch.branch);
+      setBranches(branch.branch); // Set array of branches
+    }
+  }, [dispatch, branch]);
+
+  // // Filter branches based on the search term
+  // const filterbranches = Branches?.filter((branch) =>
+  //   branch?.name?.toLowerCase().includes(searchTerm.toLowerCase())
+  // );
+
   return (
     <>
-      <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[220px_1fr]">
+      <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[220px_1fr] ">
         {/* Desktop Menu */}
-        <div className="hidden border-r bg-sky-950 md:block">
-          <div className="flex h-full max-h-screen flex-col gap-2">
+        <div className="hidden border-r  md:block ">
+          <div className="flex h-full max-h-screen flex-col gap-2 fixed bg-sky-950">
             <div className="flex h-20 items-center justify-center px-4 lg:h-[80px] lg:p-4 mt-2">
               <img src={LOGO} alt="Organicx Media logo" className="w-[100px]" />
             </div>
             <div className="flex-1 ">
               <nav className="grid items-start px-2 text-sm font-medium lg:px-4 text-gray-400 ">
+                
                 <Link
                   to="/admin"
                   className="flex items-center gap-3 rounded-full active:bg-sky-900 px-3 py-2 transition-all hover:text-white  "
                 >
                   <Home className="h-4 w-4" />
-                  Home
+                  
                 </Link>
                 <Link
-                  to="/admin/niche"
+                  to="#"
                   className="flex items-center gap-3 rounded-full active:bg-sky-900 px-3 py-2 transition-all hover:text-white"
                 >
                   <Users className="h-4 w-4" />
@@ -110,7 +135,7 @@ function DashboardLayout() {
               to="/admin/branch"
               class="text-sm font-medium self-center text-gray-300 hover:text-white w-40 rounded-full px-5 py-2  mb-4 bg-sky-900/50 border-2 border-sky-950/50 hover:border-sky-900 hover:bg-sky-950 transition-all text-center"
             >
-              Add Site
+              Branch
             </Link>
           </div>
         </div>

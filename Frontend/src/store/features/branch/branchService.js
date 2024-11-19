@@ -68,7 +68,7 @@ const updateBranch = async ({inputValues , branchId}) => {
   try {
     const axiosRespons = await axios.put(
       `${import.meta.env.VITE_BASE_URL}/branch/${branchId}`,
-     inputValues ,
+      inputValues ,
       {
         withCredentials: true,
         headers: { "Content-Type": "multipart/form-data" },

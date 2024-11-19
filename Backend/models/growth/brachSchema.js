@@ -28,7 +28,7 @@ const branchSchema = new mongoose.Schema(
       ref: "BranchManager",
       required: true,
     }, // Reference to Branch Manager
-    description: { type: String, required: true },
+    description: { type: String, default: "" },
     date_added: { type: Date, default: Date.now },
     country: { type: String, required: true },
     local_currency: { type: String, required: true },
@@ -42,7 +42,7 @@ const branchSchema = new mongoose.Schema(
       secure_url: { type: String, default: ""  },
       public_id: { type: String, default: ""  },
     }, // Path to the project plan PDF
-    branch_website_link: { type: String }, // URL for the branch website
+    branch_website_link: { type: String, default: ""  }, // URL for the branch website
     note: { type: String },
   },
   { timestamps: true }
