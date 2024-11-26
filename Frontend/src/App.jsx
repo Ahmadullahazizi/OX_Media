@@ -4,9 +4,9 @@ import HomePage from "./pages/HomePage";
 // import DashboardLayout from "./pages/Admin/DashboardLayout";
 import SideMenuLayout from "./pages/Admin/SideMenu";
 import Dashboard from "./pages/Admin/Dashboard";
-// import Branch from "./pages/Growth & strategy/AddBranch";
-import AllBranch from "./pages/Growth & strategy/AllBranches";
+import AllBranches from "./pages/Growth & strategy/AllBranches";
 import UpdateBranch from "./pages/Growth & strategy/UpdateBranch";
+import AddNewBranch from "./pages/Growth & strategy/AddNewBranch";
 
 function App() {
   
@@ -20,7 +20,9 @@ function App() {
     {/* <Route path="/admin" element={<DashboardLayout />}> */}
     <Route path="/admin" element={<SideMenuLayout />}>
     <Route index element={<Dashboard />} />
-    <Route path="branch" element={<AllBranch />} /> 
+    <Route path="branch" element={<AllBranches />} /> 
+    <Route path="add-branch" element={<AddNewBranch />} /> 
+    {/* <Route path="add-new-branch" element={<AddNewBranch />} />  */}
     <Route path="branch/update/:branchId" element={<UpdateBranch />} /> 
     </Route>
      </Routes>

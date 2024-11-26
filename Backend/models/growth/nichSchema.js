@@ -1,12 +1,18 @@
 import mongoose from "mongoose";
+const { Schema, model } = mongoose;
 
 // Schema for Niche
 const nicheSchema = new mongoose.Schema(
   {
     name: { type: String, required: true, unique: true },
+    branch: { type: Schema.Types.ObjectId, ref: 'Branch', required: true },
     description: { type: String, required: true },
-    date_added: { type: Date, default: Date.now },
+    research_file: { // Path to the research document (PDF)
+      secure_url: {type: String, required: true,},
+      public_id: { type: String,required: true,},},
+    // research_file: { type: String }, // Path to the research document (PDF)
   },
+  
   { timestamps: true }
 );
 
@@ -47,6 +53,22 @@ const subNicheServiceSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+// Schema for Sub-Niche sub_Services
+const subNicheSubServiceSchema = new mongoose.Schema(
+  {
+    service_name: { type: String, required: true },
+    description: { type: String, required: true },
+    name_in_local_language: { type: String },
+    description_in_local_language: { type: String },
+    service: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "SubNicheService",
+      required: true,
+    }, // Reference to Sub-Niche
+  },
+  { timestamps: true }
+);
+
 // Schema for Post Type
 const postTypeSchema = new mongoose.Schema(
   {
@@ -66,8 +88,8 @@ const postTypeSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Schema for Reel Type
-const reelTypeSchema = new mongoose.Schema(
+// Schema for shortvideo Type
+const shortvideoTypeSchema = new mongoose.Schema(
   {
     type_name: { type: String, required: true },
     description: { type: String, required: true },
@@ -103,19 +125,19 @@ const postTypeSampleSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Schema for Reel Type Samples
-const reelTypeSampleSchema = new mongoose.Schema(
+// Schema for shortvideo Type Samples
+const shortvideoTypeSampleSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
     description: { type: String, required: true },
     media_file: { // Path to the media file (png, jpeg)
       secure_url: {type: String, required: true,},
       public_id: { type: String,required: true,},},
-    reelid: {
+    shortvideoid: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "ReelType",
+      ref: "shortvideoType",
       required: true,
-    }, // Reference to Reel Type
+    }, // Reference to shortvideo Type
   },
   { timestamps: true }
 );
@@ -232,10 +254,14 @@ const SubNicheService = mongoose.model(
   "SubNicheService",
   subNicheServiceSchema
 );
+const subNicheSubService = mongoose.model(
+  "subNicheSubService",
+  subNicheSubServiceSchema
+);
 const PostType = mongoose.model("PostType", postTypeSchema);
-const ReelType = mongoose.model("ReelType", reelTypeSchema);
+const shortvideoType = mongoose.model("shortvideoType", shortvideoTypeSchema);
 const PostTypeSample = mongoose.model("PostTypeSample", postTypeSampleSchema);
-const ReelTypeSample = mongoose.model("ReelTypeSample", reelTypeSampleSchema);
+const shortvideoTypeSample = mongoose.model("shortvideoTypeSample", shortvideoTypeSampleSchema);
 const TechnologyType = mongoose.model("TechnologyType", technologyTypeSchema);
 const WebsiteSample = mongoose.model("WebsiteSample", websiteSampleSchema);
 const AdsSample = mongoose.model("AdsSample", adsSampleSchema);
@@ -248,10 +274,11 @@ export {
   Niche,
   SubNiche,
   SubNicheService,
+  subNicheSubService,
   PostType,
-  ReelType,
+  shortvideoType,
   PostTypeSample,
-  ReelTypeSample,
+  shortvideoTypeSample,
   TechnologyType,
   WebsiteSample,
   AdsSample,

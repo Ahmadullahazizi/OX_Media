@@ -2,28 +2,57 @@ import {
   deleteFileFromCloudnary,
   uploadFileOnCloudnary,
 } from "../../helper/cloudnaryHelper.js";
+import { Branch } from "../../models/growth/brachSchema.js";
 import {
   Niche,
   SubNiche,
   SubNicheService,
+  subNicheSubService,
 } from "../../models/growth/nichSchema.js";
 
 // ---------NICHE -----
 //Add a new Niche
 const addNiche = async (req, res) => {
   try {
-    const { name, description, date_added } = req.body;
+    const { name, branch, description } = req.body;
+    const research_file = req.file?.fieldname;
+    const research_filePath = req.file?.path;
 
-    if (!name || !description || !date_added) {
+    if (!name || !branch || !description) {
       return res
         .status(400)
         .send({ success: false, message: "All field required" });
     }
+    // Fetch the Branch
+    const branchid = await Branch.findById(branch);
+
+    if (!branchid) {
+      return res
+        .status(404)
+        .send({ success: false, message: "BRanch not found" });
+    }
+    console.log("Branch found:", branchid._id);
+
+    //Uploading file on Cloudnary
+    const { secure_url, public_id } = await uploadFileOnCloudnary(
+      research_filePath,
+      "research_file"
+    );
+    if (!secure_url) {
+      return res.status(400).send({
+        success: false,
+        message: "Error While Uploading File",
+      });
+    }
 
     const niche = await Niche.create({
       name,
+      branch: branchid._id,
       description,
-      date_added,
+      research_file: {
+        secure_url,
+        public_id,
+      },
     });
     return res.status(201).send({
       success: true,
@@ -86,8 +115,10 @@ const getSingleNiche = async (req, res) => {
 //update niche
 const updateNiche = async (req, res) => {
   try {
-    const { name, description, date_added } = req.body;
+    const { name, description } = req.body;
     const { nicheid } = req.params;
+    const research_filePath = req.file?.path;
+
     const niche = await Niche.findById(nicheid);
     console.log(niche);
     if (!niche) {
@@ -99,7 +130,21 @@ const updateNiche = async (req, res) => {
     //update any of the field that user update
     if (name) niche.name = name;
     if (description) niche.description = description;
-    if (date_added) niche.date_added = date_added;
+    //upload new manager file on cloudinary
+    if (research_filePath) {
+      const { secure_url, public_id } = await uploadFileOnCloudnary(
+        research_filePath,
+        "research_file"
+      );
+      // delete File from Cloudinary
+      if (niche.research_file && niche.research_file.public_id) {
+        await deleteFileFromCloudnary(niche.research_file.public_id);
+      }
+      niche.research_file = {
+        secure_url,
+        public_id,
+      };
+    }
 
     await niche.save();
     return res.status(200).send({
@@ -125,6 +170,10 @@ const deleteNiche = async (req, res) => {
         .status(404)
         .send({ success: false, message: "Niche not Found" });
     }
+    // delete File from cloudany
+    if (niche.research_file && niche.research_file.public_id) {
+      await deleteFileFromCloudnary(niche.research_file.public_id);
+    }
 
     await Niche.findByIdAndDelete(nicheid);
 
@@ -145,8 +194,8 @@ const deleteNiche = async (req, res) => {
 //Add a new sub Niche
 const addSubNiche = async (req, res) => {
   try {
-    console.log('Request body:', req.body);
-    console.log('Research file:', req.file);
+    console.log("Request body:", req.body);
+    console.log("Research file:", req.file);
     const {
       niche,
       name,
@@ -179,7 +228,7 @@ const addSubNiche = async (req, res) => {
         .status(404)
         .send({ success: false, message: "Nicheid not found" });
     }
-    console.log('Niche found:', nicheid._id);
+    console.log("Niche found:", nicheid._id);
 
     //Uploading file on Cloudnary
     const { secure_url, public_id } = await uploadFileOnCloudnary(
@@ -372,12 +421,10 @@ const addservice = async (req, res) => {
     } = req.body;
 
     if (!service_name || !subniche) {
-      return res
-        .status(400)
-        .send({
-          success: false,
-          message: "service_name & subniche field required",
-        });
+      return res.status(400).send({
+        success: false,
+        message: "service_name & subniche field required",
+      });
     }
     // Fetch the subniche
     const subnicheid = await SubNiche.findById(subniche);
@@ -429,7 +476,7 @@ const getAllservices = async (req, res) => {
 const getAllSubNicheservices = async (req, res) => {
   try {
     const { subid } = req.params;
-    const Services = await SubNicheService.find({subniche: subid});
+    const Services = await SubNicheService.find({ subniche: subid });
     if (!Services || Services.length === 0) {
       return res.status(404).send({
         success: false,
@@ -502,8 +549,10 @@ const updateSubNicheService = async (req, res) => {
     //update any of the field that user update
     if (service_name) service.service_name = service_name;
     if (description) service.description = description;
-    if (name_in_local_language) service.name_in_local_language = name_in_local_language;
-    if (description_in_local_language) service.description_in_local_language = description_in_local_language;
+    if (name_in_local_language)
+      service.name_in_local_language = name_in_local_language;
+    if (description_in_local_language)
+      service.description_in_local_language = description_in_local_language;
     if (subniche) service.subniche = subniche;
 
     await service.save();
@@ -547,6 +596,195 @@ const deleteService = async (req, res) => {
   }
 };
 
+//Add a new services
+const addSubservice = async (req, res) => {
+  try {
+    const {
+      service_name,
+      description,
+      name_in_local_language,
+      description_in_local_language,
+      service,
+    } = req.body;
+
+    if (!service_name || !service) {
+      return res.status(400).send({
+        success: false,
+        message: "All field are required",
+      });
+    }
+    // Fetch the subniche
+    const serviceid = await SubNicheService.findById(service);
+    if (!serviceid) {
+      return res
+        .status(404)
+        .send({ success: false, message: "Service not found" });
+    }
+    const SubService = await subNicheSubService.create({
+      service_name,
+      description,
+      name_in_local_language,
+      description_in_local_language,
+      service: serviceid,
+    });
+    return res.status(201).send({
+      success: true,
+      message: "Sub Service Created Successfully !!",
+      SubService,
+    });
+  } catch (error) {
+    console.log(`fail to Add SubService with Error - ${error}`);
+    return res.status(400).send({
+      success: false,
+      message: "Failed to add SubService",
+      error: "Error message explaining the issue",
+    });
+  }
+};
+//Get all services
+const getAllSubservices = async (req, res) => {
+  try {
+    const Services = await subNicheSubService.find({});
+    return res.status(200).send({
+      success: true,
+      totle: Services.length,
+      message: "Services Data Fetch",
+      Services,
+    });
+  } catch (error) {
+    console.log(`getAllservices failled Error - ${error}`);
+    return res.status(400).send({
+      success: false,
+      message: "Failled to get Services Data",
+    });
+  }
+};
+//this controller get all services on the bases of sub niche id
+const getSingleSubNicheSubservices = async (req, res) => {
+  try {
+    const { serid } = req.params;
+    const SubServices = await subNicheSubService.findById(serid);
+    if (!SubServices || SubServices.length === 0) {
+      return res.status(404).send({
+        success: false,
+        message: "No Sub services found for this sub-niche",
+      });
+    }
+    return res.status(200).send({
+      success: true,
+      totle: SubServices.length,
+      message: "Sub Services Data Fetch",
+      SubServices,
+    });
+  } catch (error) {
+    console.log(`getSignleSubservices failled Error - ${error}`);
+    return res.status(400).send({
+      success: false,
+      message: "Failled to get Sub Services Data",
+    });
+  }
+};
+
+//Get Single services detail
+const getServicesofSingleService = async (req, res) => {
+  try {
+    const { serid } = req.params;
+    const Service = await subNicheSubService.find({ service : serid });
+    console.log(Service)
+    if (!Service || Service.length === 0) {
+      return res.status(404).send({
+        success: false,
+        message: "No Subservices found for this Service",
+      });
+    }
+    return res.status(200).send({
+      success: true,
+      totle: Service.length,
+      message: "Services Data Fetch",
+      Service,
+    });
+  } catch (error) {
+    console.log(`getAllservicesforSingle Service failled Error - ${error}`);
+    return res.status(400).send({
+      success: false,
+      message: "Failled to get Services Data",
+    });
+  }
+};
+
+//update services
+const updateSubNicheSubService = async (req, res) => {
+  try {
+    const {
+      service_name,
+      description,
+      name_in_local_language,
+      description_in_local_language,
+      subniche,
+    } = req.body;
+    const { serid } = req.params;
+    console.log(serid);
+
+    const service = await subNicheSubService.findById(serid);
+    console.log(service);
+    if (!service) {
+      return res.status(401).send({
+        success: false,
+        message: "subservice Not Found",
+      });
+    }
+    //update any of the field that user update
+    if (service_name) service.service_name = service_name;
+    if (description) service.description = description;
+    if (name_in_local_language)
+      service.name_in_local_language = name_in_local_language;
+    if (description_in_local_language)
+      service.description_in_local_language = description_in_local_language;
+    if (subniche) service.subniche = subniche;
+
+    await service.save();
+    return res.status(200).send({
+      success: true,
+      message: "SubService Details Updated",
+    });
+  } catch (error) {
+    console.log(`Update SubService Controller failled Error - ${error}`);
+    return res.status(400).send({
+      success: false,
+      message: "Error While Updating SubService details",
+    });
+  }
+};
+
+//Delete Sub niche Services
+const deleteSubService = async (req, res) => {
+  try {
+    const { serid } = req.params;
+    console.log(serid);
+    const Subservice = await subNicheSubService.findById(serid);
+    if (!Subservice) {
+      return res
+        .status(404)
+        .send({ success: false, message: "SubService not Found" });
+    }
+
+    await subNicheSubService.findByIdAndDelete(serid);
+
+    return res.status(200).send({
+      success: true,
+      message: "Sub Service Deleted Successfully",
+    });
+  } catch (error) {
+    console.log(`Delete sub service Controller failled Error - ${error}`);
+    return res.status(400).send({
+      success: false,
+      message: "Unable to delete data",
+    });
+  }
+};
+
+
+
 export {
   addNiche,
   getAllNiche,
@@ -564,4 +802,10 @@ export {
   getSingleService,
   updateSubNicheService,
   deleteService,
+  addSubservice,
+  getSingleSubNicheSubservices,
+  getAllSubservices,
+  updateSubNicheSubService,
+  deleteSubService,
+  getServicesofSingleService,
 };

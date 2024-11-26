@@ -1,5 +1,5 @@
 import { deleteFileFromCloudnary, uploadFileOnCloudnary } from "../../helper/cloudnaryHelper.js";
-import { SubNiche, PostType, PostTypeSample, ReelType, ReelTypeSample, TechnologyType, WebsiteSample, AdsSample, LandingPage,Keyword } from "../../models/growth/nichSchema.js";
+import { SubNiche, PostType, PostTypeSample, shortvideoType, shortvideoTypeSample, TechnologyType, WebsiteSample, AdsSample, LandingPage,Keyword } from "../../models/growth/nichSchema.js";
 
 // ---------POST TYPE -----
 //Add a new Post type
@@ -348,9 +348,9 @@ const deletePostTypeSample = async (req, res) => {
 };
 
 
-// ---------REEL TYPE -----
-//Add a new reel type
-const addReelType = async (req, res) => {
+// ---------shortvideo TYPE -----
+//Add a new shortvideo type
+const addshortvideoType = async (req, res) => {
   try {
     const { type_name, description, importance_level, subniche } = req.body;
     // Check if all required fields are provided
@@ -377,7 +377,7 @@ const addReelType = async (req, res) => {
          .send({ success: false, message: "Subniche not found" });
      }
 
-    const reeltype = await ReelType.create({
+    const shortvideotype = await shortvideoType.create({
       type_name,
       description,
       importance_level,
@@ -385,29 +385,29 @@ const addReelType = async (req, res) => {
     });
     return res.status(201).send({
       success: true,
-      message: "reeltype Created Successfully !!",
-      reeltype,
+      message: "shortvideotype Created Successfully !!",
+      shortvideotype,
     });
   } catch (error) {
-    console.log(`fail to Add reeltype with Error - ${error}`);
+    console.log(`fail to Add shortvideotype with Error - ${error}`);
     return res.status(400).send({
       success: false,
-      message: "Failed to add reeltype",
+      message: "Failed to add shortvideotype",
       error: "Error message explaining the issue",
     });
   }
 };
-//update reel type
-const UpdateReelType = async (req, res) => {
+//update shortvideo type
+const UpdateshortvideoType = async (req, res) => {
   try {
     const { type_name, description, importance_level, subniche } = req.body;
     const { rtypeid } = req.params;
-    const rtype = await ReelType.findById(rtypeid);
+    const rtype = await shortvideoType.findById(rtypeid);
     console.log(rtype);
     if (!rtype) {
       return res.status(401).send({
         success: false,
-        message: "Reel Type Not Found",
+        message: "shortvideo Type Not Found",
       });
     }
     //update any of the field that user update
@@ -419,80 +419,80 @@ const UpdateReelType = async (req, res) => {
     await rtype.save();
     return res.status(200).send({
       success: true,
-      message: "Reel Type Details Updated",
+      message: "shortvideo Type Details Updated",
     });
   } catch (error) {
-    console.log(`Update Reel Type Controller failled Error - ${error}`);
+    console.log(`Update shortvideo Type Controller failled Error - ${error}`);
     return res.status(400).send({
       success: false,
-      message: "Error While Updating Reel Type details",
+      message: "Error While Updating shortvideo Type details",
     });
   }
 };
-//Get all reel types
-const getAllReelType = async (req, res) => {
+//Get all shortvideo types
+const getAllshortvideoType = async (req, res) => {
   try {
-    const reeltype = await ReelType.find({});
+    const shortvideotype = await shortvideoType.find({});
     return res.status(200).send({
       success: true,
-      total: reeltype.length,
-      message: "All Reel Type Fetch",
-      reeltype,
+      total: shortvideotype.length,
+      message: "All shortvideo Type Fetch",
+      shortvideotype,
     });
   } catch (error) {
-    console.log(`GetAll reeltype failled Error - ${error}`);
+    console.log(`GetAll shortvideotype failled Error - ${error}`);
     return res.status(400).send({
       success: false,
-      message: "Failled to get Reel types ",
+      message: "Failled to get shortvideo types ",
     });
   }
 };
-//Get Single reel detail
-const getSingleReelType = async (req, res) => {
+//Get Single shortvideo detail
+const getSingleshortvideoType = async (req, res) => {
   try {
     const { rtypeid } = req.params;
     console.log(rtypeid);
-    const rtype = await ReelType.findById(rtypeid);
+    const rtype = await shortvideoType.findById(rtypeid);
     console.log(rtype);
     if (!rtype) {
       return res
         .status(404)
-        .send({ success: false, message: "Reel Type not Found" });
+        .send({ success: false, message: "shortvideo Type not Found" });
     }
     //Success Respose when new category added to DB
     return res.status(201).send({
       success: true,
-      message: "Reel Type Fetch SucessFully",
+      message: "shortvideo Type Fetch SucessFully",
       rtype,
     });
   } catch (error) {
-    console.log(`getSingleReelType failled Error - ${error}`);
+    console.log(`getSingleshortvideoType failled Error - ${error}`);
     return res.status(400).send({
       success: false,
-      message: "getSingleReelType Controller Failled",
+      message: "getSingleshortvideoType Controller Failled",
     });
   }
 };
-//Delete reel type
-const DeleteReelType = async (req, res) => {
+//Delete shortvideo type
+const DeleteshortvideoType = async (req, res) => {
   try {
     const { rtypeid } = req.params;
     console.log(rtypeid);
-    const rtype = await ReelType.findById(rtypeid);
+    const rtype = await shortvideoType.findById(rtypeid);
     if (!rtype) {
       return res
         .status(404)
-        .send({ success: false, message: "Reel Type not Found" });
+        .send({ success: false, message: "shortvideo Type not Found" });
     }
 
-    await ReelType.findByIdAndDelete(rtypeid);
+    await shortvideoType.findByIdAndDelete(rtypeid);
 
     return res.status(200).send({
       success: true,
-      message: "Reel Type Deleted Successfully",
+      message: "shortvideo Type Deleted Successfully",
     });
   } catch (error) {
-    console.log(`Delete Reel Type Controller failled Error - ${error}`);
+    console.log(`Delete shortvideo Type Controller failled Error - ${error}`);
     return res.status(400).send({
       success: false,
       message: "Unable to delete data",
@@ -500,20 +500,20 @@ const DeleteReelType = async (req, res) => {
   }
 };
 
-//----------- REEL SAMPLE -----------
-//Add a new reel type sample
-const addReelTypeSample = async (req, res) => {
+//----------- shortvideo SAMPLE -----------
+//Add a new shortvideo type sample
+const addshortvideoTypeSample = async (req, res) => {
   try {
     console.log(req.body)
     const {
       name,
       description,
-      reelid,
+      shortvideoid,
     } = req.body;
     const media_file = req.file?.fieldname;
     const media_filePath = req.file?.path;
 
-    if (!name || !reelid || !media_file) {
+    if (!name || !shortvideoid || !media_file) {
       return res
         .status(400)
         .send({
@@ -522,8 +522,8 @@ const addReelTypeSample = async (req, res) => {
         });
     }
     // Fetch the subniche
-    const reeltypeid = await ReelType.findById(reelid);
-    if (!reeltypeid) {
+    const shortvideotypeid = await shortvideoType.findById(shortvideoid);
+    if (!shortvideotypeid) {
       return res
         .status(404)
         .send({ success: false, message: "Posttype not found" });
@@ -540,18 +540,18 @@ const addReelTypeSample = async (req, res) => {
       });
     }
 
-    const rtype_Sample = await ReelTypeSample.create({
+    const rtype_Sample = await shortvideoTypeSample.create({
       name,
       description,
       media_file: {
         secure_url,
         public_id,
       },
-      reelid: reeltypeid,
+      shortvideoid: shortvideotypeid,
     });
     return res.status(201).send({
       success: true,
-      message: "Reel Type Sample Successfully !!",
+      message: "shortvideo Type Sample Successfully !!",
       rtype_Sample,
     });
   } catch (error) {
@@ -563,31 +563,31 @@ const addReelTypeSample = async (req, res) => {
     });
   }
 };
-//update a sub Reel type sample
-const updateReelTypeSample = async (req, res) => {
+//update a sub shortvideo type sample
+const updateshortvideoTypeSample = async (req, res) => {
   try {
     const { sampleid } = req.params;
     console.log(req.body);
     const {
       name,
       description,
-      reelid,
+      shortvideoid,
     } = req.body;
 
     const media_filePath = req.file?.path;
 
-    const reeltypesample = await PostTypeSample.findById(sampleid);
-    console.log(reeltypesample);
-    if (!reeltypesample) {
+    const shortvideotypesample = await PostTypeSample.findById(sampleid);
+    console.log(shortvideotypesample);
+    if (!shortvideotypesample) {
       return res.status(401).send({
         success: false,
-        message: "Reeltype Sample Not Found",
+        message: "shortvideotype Sample Not Found",
       });
     }
     //update any of the field that user update
-    if (name) reeltypesample.name = name;
-    if (description) reeltypesample.description = description;
-    if (reelid) reeltypesample.reelid = reelid;
+    if (name) shortvideotypesample.name = name;
+    if (description) shortvideotypesample.description = description;
+    if (shortvideoid) shortvideotypesample.shortvideoid = shortvideoid;
 
     //upload new manager file on cloudinary
     if (media_filePath) {
@@ -596,49 +596,49 @@ const updateReelTypeSample = async (req, res) => {
         "media_file"
       );
       // delete File from Cloudinary
-      if (reeltypesample.media_file && reeltypesample.media_file.public_id) {
-        await deleteFileFromCloudnary(reeltypesample.media_file.public_id);
+      if (shortvideotypesample.media_file && shortvideotypesample.media_file.public_id) {
+        await deleteFileFromCloudnary(shortvideotypesample.media_file.public_id);
       }
-      reeltypesample.media_file = {
+      shortvideotypesample.media_file = {
         secure_url,
         public_id,
       };
     }
-    await reeltypesample.save();
+    await shortvideotypesample.save();
 
     return res.status(200).send({
       success: true,
-      message: "Reel Type sample Updated",
-      reeltypesample,
+      message: "shortvideo Type sample Updated",
+      shortvideotypesample,
     });
   } catch (error) {
-    console.log(`Update reel Type sample controller failled Error - ${error}`);
+    console.log(`Update shortvideo Type sample controller failled Error - ${error}`);
     return res.status(400).send({
       success: false,
-      message: "Error While Updating reel Type sample details",
+      message: "Error While Updating shortvideo Type sample details",
     });
   }
 };
 //Get All Post type samples
 const getAllRtypeSample = async (req, res) => {
   try {
-    const Samples = await ReelTypeSample.find({});
+    const Samples = await shortvideoTypeSample.find({});
     return res.status(200).send({
       success: true,
       total: Samples.length,
-      message: "Reel type Samples Fetched",
+      message: "shortvideo type Samples Fetched",
       Samples,
     });
   } catch (error) {
-    console.log(`getAll Reel type Sample failled Error - ${error}`);
+    console.log(`getAll shortvideo type Sample failled Error - ${error}`);
     return res.status(400).send({
       success: false,
-      message: "Failled to get Reel type Sample Data",
+      message: "Failled to get shortvideo type Sample Data",
     });
   }
 };
-//Get Single Reel sample detail
-const getSingleReelTypeSample = async (req, res) => {
+//Get Single shortvideo sample detail
+const getSingleshortvideoTypeSample = async (req, res) => {
   try {
     const { sampleid } = req.params;
     console.log(sampleid);
@@ -647,28 +647,28 @@ const getSingleReelTypeSample = async (req, res) => {
     if (!sample) {
       return res
         .status(404)
-        .send({ success: false, message: "Reel sample not Found" });
+        .send({ success: false, message: "shortvideo sample not Found" });
     }
     //Success Respose when new category added to DB
     return res.status(201).send({
       success: true,
-      message: "Reel sample Fetch SucessFully",
+      message: "shortvideo sample Fetch SucessFully",
       sample,
     });
   } catch (error) {
-    console.log(`getSingleReelTypeSample failled Error - ${error}`);
+    console.log(`getSingleshortvideoTypeSample failled Error - ${error}`);
     return res.status(400).send({
       success: false,
-      message: "getSingleReelTypeSample Controller Failled",
+      message: "getSingleshortvideoTypeSample Controller Failled",
     });
   }
 };
 //Delete sample
-const deleteReelTypeSample = async (req, res) => {
+const deleteshortvideoTypeSample = async (req, res) => {
   try {
     const { sampleid } = req.params;
     console.log(sampleid);
-    const sample = await ReelTypeSample.findById(sampleid);
+    const sample = await shortvideoTypeSample.findById(sampleid);
     if (!sample) {
       return res
         .status(404)
@@ -679,7 +679,7 @@ const deleteReelTypeSample = async (req, res) => {
       await deleteFileFromCloudnary(sample.media_file.public_id);
     }
 
-    await ReelTypeSample.findByIdAndDelete(sampleid);
+    await shortvideoTypeSample.findByIdAndDelete(sampleid);
 
     return res.status(200).send({
       success: true,
@@ -1516,7 +1516,7 @@ const addKeywords = async (req, res) => {
          .send({ success: false, message: "Subniche not found" });
      }
 
-    const reeltype = await Keyword.create({
+    const shortvideotype = await Keyword.create({
       keyword,
       description,
       level_of_competition,
@@ -1526,7 +1526,7 @@ const addKeywords = async (req, res) => {
     return res.status(201).send({
       success: true,
       message: "Keyword added Successfully !!",
-      reeltype,
+      shortvideotype,
     });
   } catch (error) {
     console.log(`fail to Add Keyword with Error - ${error}`);
@@ -1657,16 +1657,16 @@ export {
   getSinglePostTypeSample,
   updatePostTypeSample,
   deletePostTypeSample,
-  addReelType,
-  DeleteReelType,
-  getSingleReelType,
-  UpdateReelType,
-  getAllReelType,
-  addReelTypeSample,
-  updateReelTypeSample,
-  deleteReelTypeSample,
+  addshortvideoType,
+  DeleteshortvideoType,
+  getSingleshortvideoType,
+  UpdateshortvideoType,
+  getAllshortvideoType,
+  addshortvideoTypeSample,
+  updateshortvideoTypeSample,
+  deleteshortvideoTypeSample,
   getAllRtypeSample,
-  getSingleReelTypeSample,
+  getSingleshortvideoTypeSample,
   addTechTypeSample,
   getAllTechTypeSample,
   getAllSubNichetech,

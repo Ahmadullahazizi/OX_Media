@@ -7,11 +7,17 @@ export default {
   ],
   theme: {
   	extend: {
-  		borderRadius: {
-  			lg: 'var(--radius)',
-  			md: 'calc(var(--radius) - 2px)',
-  			sm: 'calc(var(--radius) - 4px)'
-  		},
+		screens: {
+			sm: '480px',
+			md: '768px',
+			lg: '976px',
+			xl: '1440px',
+		  },
+  		// borderRadius: {
+  		// 	lg: 'var(--radius)',
+  		// 	md: 'calc(var(--radius) - 2px)',
+  		// 	sm: 'calc(var(--radius) - 4px)'
+  		// },
   		colors: {
 			"sidebar-bg":"#F4F5FB",
 			"sidebar-text":"#323338",

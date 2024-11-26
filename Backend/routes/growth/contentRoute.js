@@ -11,16 +11,16 @@ import {
   getSinglePostTypeSample,
   updatePostTypeSample,
   deletePostTypeSample,
-  addReelType,
-  getAllReelType,
-  getSingleReelType,
-  UpdateReelType,
-  DeleteReelType,
-  addReelTypeSample,
+  addshortvideoType,
+  getAllshortvideoType,
+  getSingleshortvideoType,
+  UpdateshortvideoType,
+  DeleteshortvideoType,
+  addshortvideoTypeSample,
   getAllRtypeSample,
-  getSingleReelTypeSample,
-  updateReelTypeSample,
-  deleteReelTypeSample,
+  getSingleshortvideoTypeSample,
+  updateshortvideoTypeSample,
+  deleteshortvideoTypeSample,
   addTechTypeSample,
   getAllTechTypeSample,
   getAllSubNichetech,
@@ -87,40 +87,40 @@ router.put(
 // the route below http://localhost:3000/api/v1/content//update-ptypesample/:sampleid - POST
 router.delete("/delete-ptypesample/:sampleid", deletePostTypeSample);
 
-//----------REEL----------
+//----------shortvideo----------
 // the route below http://localhost:3000/api/v1/content - POST
-router.post("/add-reeltype", addReelType);
+router.post("/add-shortvideotype", addshortvideoType);
 
 // the route below http://localhost:3000/api/v1/content/get-posttype - POST
-router.get("/get-reeltype", getAllReelType);
+router.get("/get-shortvideotype", getAllshortvideoType);
 
 // the route below http://localhost:3000/api/v1/content/get-single-posttype/:ptypeid - POST
-router.get("/get-single-reeltype/:rtypeid", getSingleReelType);
+router.get("/get-single-shortvideotype/:rtypeid", getSingleshortvideoType);
 
 // the route below http://localhost:3000/api/v1/content/update-posttype/:ptypeid - POST
-router.put("/update-reeltype/:rtypeid", UpdateReelType);
+router.put("/update-shortvideotype/:rtypeid", UpdateshortvideoType);
 
 // the route below http://localhost:3000/api/v1/content/delete-posttype/:ptypeid - POST
-router.delete("/delete-reeltype/:rtypeid", DeleteReelType);
+router.delete("/delete-shortvideotype/:rtypeid", DeleteshortvideoType);
 
-//----------REEL Sample----------
+//----------shortvideo Sample----------
 // the route below http://localhost:3000/api/v1/content//add-rtypesample - POST
-router.post("/add-rtypesample", upload.single("media_file"), addReelTypeSample);
+router.post("/add-rtypesample", upload.single("media_file"), addshortvideoTypeSample);
 
 // the route below http://localhost:3000/api/v1/content//get-rtypesample - POST
 router.get("/get-rtypesample", getAllRtypeSample);
 
 // the route below http://localhost:3000/api/v1/content/get-single-rtypesample/:sampleid - POST
-router.get("/get-single-rtypesample/:sampleid", getSingleReelTypeSample);
+router.get("/get-single-rtypesample/:sampleid", getSingleshortvideoTypeSample);
 
 // the route below http://localhost:3000/api/v1/content/update-rtypesample/:sampleid - POST
 router.put(
   "/update-rtypesample/:sampleid",
   upload.single("media_file"),
-  updateReelTypeSample
+  updateshortvideoTypeSample
 );
 // the route below http://localhost:3000/api/v1/content/update-rtypesample/:sampleid - POST
-router.delete("/delete-rtypesample/:sampleid", deleteReelTypeSample);
+router.delete("/delete-rtypesample/:sampleid", deleteshortvideoTypeSample);
 
 //-----------TECHNOLOGY ROUTE////////////
 // the route below http://localhost:3000/api/v1/content/add-techtype - POST

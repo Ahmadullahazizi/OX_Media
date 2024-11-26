@@ -10,7 +10,10 @@ export const AddNewBranch = createAsyncThunk(
       const response = await branchService.addBranch(inputValues);
       return response;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error);
+      // return thunkAPI.rejectWithValue(error);
+      const errorMessage =
+        error.response?.data?.message || error.message || "Something went wrong!";
+      return thunkAPI.rejectWithValue(errorMessage);
     }
   }
 );
